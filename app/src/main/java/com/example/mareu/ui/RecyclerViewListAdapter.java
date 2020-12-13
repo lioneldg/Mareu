@@ -17,8 +17,8 @@ import java.util.List;
 public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.RecyclerViewListViewHolder> {
     private ListCellBinding listCellBinding;
 
-    private InterfaceMeetingApiService service = DI.getMeetingApiService();
-    private final List<Meeting> meetings = service.getMeetings();
+    private InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API services
+    private final List<Meeting> meetings = service.getMeetings();                       //récupère la liste des réunions
 
     @NonNull
     @Override
@@ -60,7 +60,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
             });
         }
 
-        public void display(Meeting meeting) {
+        public void display(Meeting meeting) {                                //affiche un élément de la RV (de toute façon il n'y en a qu'un pour l'instant) avec un truc pris au hazard pour tester le bon fonctionnement
             currentMeeting = meeting;
             name.setText(String.valueOf(meeting.getLocation()));
             description.setText(meeting.getSubject());

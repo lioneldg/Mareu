@@ -10,4 +10,8 @@ public interface InterfaceMeetingApiService {
     void createMeeting(Meeting meeting);
 
     void deleteMeeting(Meeting meeting);
+
+    void setDate(int day, int month, int year);
+
+    void setTime(int hour, int minute);
 }

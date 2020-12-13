@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="emails">
+        <item>lioneldegans@gmail.com</item>
+        <item>alpha@gmail.com</item>
+        <item>beta@shadline.com</item>
+        <item>charly@lachocolaterie.fr</item>
+        <item>damien.francois@gmail.com</item>
+        <item>ericdurant@jettable.fr</item>
+        <item>froid@hiver.fr</item>
+        <item>gerardbouchard@gmail.com</item>
+        <item>hello@world.com</item>
+        <item>initiative@commune.fr</item>
+    </string-array>
+
+</resources>
