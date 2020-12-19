@@ -4,26 +4,16 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class Meeting {
-    private long id;
     private Timestamp time;
     private int location;               // 1 to 10
     private String subject;
     private List<String> participants;
 
-    public Meeting(long id, Timestamp time, int location, String subject, List<String> participants){
-        this.id = id;
+    public Meeting(Timestamp time, int location, String subject, List<String> participants){
         this.time = time;
         this.location = location;
         this.subject = subject;
         this.participants= participants;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Timestamp getTime() {

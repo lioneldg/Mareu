@@ -12,6 +12,10 @@ import com.example.mareu.databinding.ListCellBinding;
 import com.example.mareu.di.DI;
 import com.example.mareu.model.Meeting;
 import com.example.mareu.service.InterfaceMeetingApiService;
+import com.example.mareu.tools.Tools;
+
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.RecyclerViewListViewHolder> {
@@ -41,29 +45,28 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
 
     public static class RecyclerViewListViewHolder extends RecyclerView.ViewHolder{
 
-        private final TextView name;
-        private final TextView description;
-        private Meeting currentMeeting;
+        private final TextView boldLine;
+        private final TextView participants;
 
         public RecyclerViewListViewHolder(final ListCellBinding itemView) {
             super(itemView.getRoot());
-            name = itemView.name;
-            description = itemView.description;
-            itemView.getRoot().setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View view) {
-                    new AlertDialog.Builder(itemView.getRoot().getContext())
-                            .setTitle(currentMeeting.getSubject())
-                            .setMessage(currentMeeting.getParticipants().get(0))
-                            .show();
-                }
-            });
+            boldLine = itemView.boldLine;
+            participants = itemView.participants;
         }
 
-        public void display(Meeting meeting) {                                //affiche un élément de la RV (de toute façon il n'y en a qu'un pour l'instant) avec un truc pris au hazard pour tester le bon fonctionnement
-            currentMeeting = meeting;
-            name.setText(String.valueOf(meeting.getLocation()));
-            description.setText(meeting.getSubject());
+        public void display(Meeting meeting) {
+            Date date = new Date(meeting.getTime().getTime());//timestamp to date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);                           //date to calendar
+            String hour = Tools.formatStringTime(calendar.get(Calendar.HOUR_OF_DAY));
+            String minute = Tools.formatStringTime(calendar.get(Calendar.MINUTE));
+            String day = Tools.formatStringTime(calendar.get(Calendar.DAY_OF_MONTH));
+            String month = Tools.formatStringTime(calendar.get(Calendar.MONTH));
+            String bold = meeting.getSubject() + " - salle " + meeting.getLocation() + " \nLe " + day + "/" + month + " à " + hour + "H" + minute ;
+            String participantsStr = meeting.getParticipants().toString();
+            participantsStr = participantsStr.substring(1, participantsStr.length()-1); //retrait du premier et dernier caractère
+            boldLine.setText(bold);
+            participants.setText(participantsStr);
         }
     }
 }

@@ -7,23 +7,18 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:id="@+id/boldLine"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="15dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        tools:text="Personnage" />
+        tools:text="boldLine" />
 
     <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
+        android:id="@+id/participants"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:lines="1"
-        android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        tools:text="Description" />
+        tools:text="Participants" />
 
 
 </LinearLayout>
