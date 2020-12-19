@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.example.mareu.R;
 import com.example.mareu.databinding.ActivityAddMeetingBinding;
 import com.example.mareu.di.DI;
 import com.example.mareu.service.InterfaceMeetingApiService;
+import com.example.mareu.tools.Tools;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -61,6 +63,13 @@ public class AddMeetingActivity extends AppCompatActivity {
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, roomNumbers);
         spinnerRooms.setAdapter(arrayAdapter);
 
+        editTextMeetingSubject.setOnKeyListener((view, keyCode, keyEvent) -> {                                      //retour à la ligne automatique arrivé à 20 caractères
+            if(editTextMeetingSubject.getText().length() > 20 && keyCode == ' ' && editTextMeetingSubject.isSingleLine()){
+                editTextMeetingSubject.append("\n");
+            }
+            return false;
+        });
+
         buttonDatePicker.setOnClickListener(view -> {               //onClickListener sur le bouton Date
             final Calendar c = Calendar.getInstance();
             currentYear = c.get(Calendar.YEAR);
@@ -93,7 +102,18 @@ public class AddMeetingActivity extends AppCompatActivity {
         autoCompleteTextView.setAdapter(autocompleteAdapter);
         autoCompleteTextView.setOnKeyListener((view, keyCode, keyEvent) -> {
             if(keyEvent.getAction() == keyEvent.ACTION_UP && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-                createChip();
+                String email = autoCompleteTextView.getText().toString();                                                                       //récupération de la saisie touche entré incluse
+                email = email.substring(0, email.length()-1);                                                                                   //retrait de la touche entré dans la saisie
+                email = email.toLowerCase();
+                if(Tools.validateEmail(email)) {
+                    createChip(email);
+                    autoCompleteTextView.setText("");
+                } else{
+                    autoCompleteTextView.setText("");
+                    autoCompleteTextView.append(email);                                                          //réécrit l'email et positionne le curseur à la fin
+                    Toast.makeText(this, "Veuillez saisir un format d'adresse mail valide.", Toast.LENGTH_LONG).show();
+                }
+
             }
             return false;
         });
@@ -111,17 +131,12 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     }
 
-    private void createChip() {
+    private void createChip(String email) {
         Chip chip = new Chip(this);
-        chip.setText(autoCompleteTextView.getText());
-        autoCompleteTextView.setText("");
+        chip.setText(email);
         chip.setBackgroundColor(R.color.purple_200);
         chip.setCloseIconVisible(true);
-        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                chipGroup.removeView(chip);
-            }
-        });
+        chip.setOnCloseIconClickListener(view -> chipGroup.removeView(chip));
         chip.setTextColor(getResources().getColor(R.color.black));
         chipGroup.addView(chip);
     }
