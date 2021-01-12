@@ -1,8 +1,10 @@
 package com.example.mareu.ui;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ArrayAdapter;
@@ -12,8 +14,12 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.mareu.R;
 import com.example.mareu.databinding.ActivityAddMeetingBinding;
 import com.example.mareu.di.DI;
@@ -28,8 +34,16 @@ import java.util.Calendar;
 import java.util.List;
 
 public class AddMeetingActivity extends AppCompatActivity {
-    private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
-    private String yearStr, monthOfYearStr, dayOfMonthStr, hourStr, minuteStr;
+    private int currentYear;
+    private int currentMonth;
+    private int currentDay;
+    private int currentHour;
+    private int currentMinute;
+    private int pickedYear = -1;
+    private int pickedMonthOfYear = -1;
+    private int pickedDayOfMonth = -1;
+    private int pickedHour = -1;
+    private int pickedMinute = -1;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private AutoCompleteTextView autoCompleteTextView;
@@ -78,9 +92,11 @@ public class AddMeetingActivity extends AppCompatActivity {
             currentMonth = c.get(Calendar.MONTH);
             currentDay = c.get(Calendar.DAY_OF_MONTH);              //récupération de la date courante
             datePickerDialog = new DatePickerDialog(context, (view12, year, monthOfYear, dayOfMonth) -> {   //création de la DatePickerDialog
-                yearStr = String.valueOf(year);
-                monthOfYearStr = Tools.formatStringTime(monthOfYear+1);
-                dayOfMonthStr = Tools.formatStringTime(dayOfMonth);
+                String monthOfYearStr = Tools.formatStringTime(monthOfYear + 1);
+                String dayOfMonthStr = Tools.formatStringTime(dayOfMonth);
+                pickedYear = year;
+                pickedMonthOfYear = monthOfYear;
+                pickedDayOfMonth = dayOfMonth;
                 buttonDatePicker.setText(dayOfMonthStr + "/" + monthOfYearStr + "/" + year);
             }, currentYear, currentMonth, currentDay);
             datePickerDialog.show();
@@ -91,8 +107,10 @@ public class AddMeetingActivity extends AppCompatActivity {
             currentHour = c.get(Calendar.HOUR_OF_DAY);
             currentMinute = c.get(Calendar.MINUTE);                 //récupération de l'heure courante
             timePickerDialog = new TimePickerDialog(context, (view1, hour, minute) -> {     //création de la TimePickerDialog
-                hourStr = Tools.formatStringTime(hour);
-                minuteStr = Tools.formatStringTime(minute);
+                String hourStr = Tools.formatStringTime(hour);
+                String minuteStr = Tools.formatStringTime(minute);
+                pickedHour = hour;
+                pickedMinute = minute;
                 buttonTimePicker.setText(hourStr + "H" + minuteStr);
             }, currentHour, currentMinute, true);
             timePickerDialog.show();
@@ -115,7 +133,6 @@ public class AddMeetingActivity extends AppCompatActivity {
                     autoCompleteTextView.append(email);                                                          //réécrit l'email et positionne le curseur à la fin
                     Toast.makeText(this, "Veuillez saisir une adresse mail valide.", Toast.LENGTH_LONG).show();
                 }
-
             }
             return false;
         });
@@ -128,9 +145,10 @@ public class AddMeetingActivity extends AppCompatActivity {
             String room = spinnerRooms.getSelectedItem().toString();
 
             if(testsBeforeValid(subject, master)){
-                Timestamp timestamp = Timestamp.valueOf(yearStr + '-' + monthOfYearStr + '-' + dayOfMonthStr + ' ' + hourStr + ':' + minuteStr + ':' + '0');
-                Toast.makeText(this, "timestamps: " + timestamp.getTime(), Toast.LENGTH_LONG).show();
-                service.createMeeting(new Meeting(timestamp, Integer.parseInt(room), subject, participants));
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(pickedYear, pickedMonthOfYear, pickedDayOfMonth, pickedHour, pickedMinute);
+                service.createMeeting(new Meeting(calendar, Integer.parseInt(room), subject, participants));
+                setResult(Activity.RESULT_OK);
                 finish();
             }
         });
@@ -150,17 +168,17 @@ public class AddMeetingActivity extends AppCompatActivity {
             infoErrors += "Veuillez saisir votre nom dans le champ organisateur.";
             valid = false;
         }
-        if(!Tools.validateDate(dayOfMonthStr, monthOfYearStr, yearStr)){
+        if(!Tools.validateDate(pickedDayOfMonth, pickedMonthOfYear + 1, pickedYear)){
             if(infoErrors.length() > 0 ) infoErrors += "\n";
             infoErrors += "Veuillez choisir une date valide.";
             valid = false;
         }
-        if(!Tools.validateTime(hourStr, minuteStr)){
+        if(!Tools.validateTime(pickedHour, pickedMinute)){
             if(infoErrors.length() > 0 ) infoErrors += "\n";
             infoErrors += "Veuillez choisir une heure valide.";
             valid = false;
         }
-        if(!Tools.participantsIsNotEmpty(participants)){
+        if(Tools.participantsIsEmpty(participants)){
             if(infoErrors.length() > 0 ) infoErrors += "\n";
             infoErrors += "Veuillez renseigner le(s) participant(s).";
             valid = false;

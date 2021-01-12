@@ -7,11 +7,28 @@ import java.util.List;
 public interface InterfaceMeetingApiService {
     List<Meeting> getMeetings();
 
+    List<Meeting> getFilteredMeetings();
+
     void createMeeting(Meeting meeting);
 
     void deleteMeeting(Meeting meeting);
 
-    void setDate(int day, int month, int year);
+    void clearMeetings();
 
-    void setTime(int hour, int minute);
+    void sortByDate();
+
+    void initFilterByDate(int year, int monthOfYear, int dayOfMonth);
+
+    void filterByDate();
+
+    void initFilterByLocation(int location);
+
+    void filterByLocation();
+
+    void filterBoth();
+
+    MeetingApiService.EnumFilterType getFilterType();
+
+    void setFilterType(MeetingApiService.EnumFilterType type);
+
 }

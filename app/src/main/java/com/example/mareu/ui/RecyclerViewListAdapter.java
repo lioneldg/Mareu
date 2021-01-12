@@ -1,8 +1,10 @@
 package com.example.mareu.ui;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,9 +22,12 @@ import java.util.List;
 
 public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.RecyclerViewListViewHolder> {
     private ListCellBinding listCellBinding;
-
     private InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API services
-    private final List<Meeting> meetings = service.getMeetings();                       //récupère la liste des réunions
+    private List<Meeting> meetings;
+
+    public RecyclerViewListAdapter(List<Meeting> meetings) {
+        this.meetings = meetings;
+    }
 
     @NonNull
     @Override
@@ -35,7 +40,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewListAdapter.RecyclerViewListViewHolder holder, int position) {
         Meeting meeting = meetings.get(position);
-        holder.display(meeting);
+        holder.display(meeting, service, this);
     }
 
     @Override
@@ -45,28 +50,35 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
 
     public static class RecyclerViewListViewHolder extends RecyclerView.ViewHolder{
 
-        private final TextView boldLine;
+        private final TextView subject;
+        private final TextView location;
         private final TextView participants;
+        private final ImageButton delete;
 
         public RecyclerViewListViewHolder(final ListCellBinding itemView) {
             super(itemView.getRoot());
-            boldLine = itemView.boldLine;
+            subject = itemView.subject;
+            location = itemView.location;
             participants = itemView.participants;
+            delete = itemView.delete;
         }
 
-        public void display(Meeting meeting) {
-            Date date = new Date(meeting.getTime().getTime());//timestamp to date
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);                           //date to calendar
+        public void display(Meeting meeting, InterfaceMeetingApiService service, RecyclerViewListAdapter recyclerViewListAdapter) {
+            Calendar calendar = meeting.getCalendar();
             String hour = Tools.formatStringTime(calendar.get(Calendar.HOUR_OF_DAY));
             String minute = Tools.formatStringTime(calendar.get(Calendar.MINUTE));
             String day = Tools.formatStringTime(calendar.get(Calendar.DAY_OF_MONTH));
-            String month = Tools.formatStringTime(calendar.get(Calendar.MONTH));
-            String bold = meeting.getSubject() + " - salle " + meeting.getLocation() + " \nLe " + day + "/" + month + " à " + hour + "H" + minute ;
+            String month = Tools.formatStringTime(calendar.get(Calendar.MONTH) + 1);
+            String locationStr = "Salle " + meeting.getLocation() + ", le " + day + "/" + month + " à " + hour + "H" + minute ;
             String participantsStr = meeting.getParticipants().toString();
             participantsStr = participantsStr.substring(1, participantsStr.length()-1); //retrait du premier et dernier caractère
-            boldLine.setText(bold);
+            subject.setText(meeting.getSubject());
+            location.setText(locationStr);
             participants.setText(participantsStr);
+            delete.setOnClickListener(view -> {
+                service.deleteMeeting(meeting);
+                recyclerViewListAdapter.notifyDataSetChanged();
+            });
         }
     }
 }

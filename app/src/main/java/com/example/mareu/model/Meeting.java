@@ -1,27 +1,28 @@
 package com.example.mareu.model;
 
-import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Comparator;
 
-public class Meeting {
-    private Timestamp time;
+public class Meeting{
+    private Calendar calendar;
     private int location;               // 1 to 10
     private String subject;
     private List<String> participants;
 
-    public Meeting(Timestamp time, int location, String subject, List<String> participants){
-        this.time = time;
+    public Meeting(Calendar calendar, int location, String subject, List<String> participants){
+        this.calendar = calendar;
         this.location = location;
         this.subject = subject;
         this.participants= participants;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Calendar getCalendar() {
+        return calendar;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
     }
 
     public int getLocation() {
@@ -47,4 +48,28 @@ public class Meeting {
     public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
+
+    public static Comparator<Meeting> meetingDateComparator = new Comparator<Meeting>() {
+        public int compare(Meeting m1, Meeting m2) {
+            long dateM1 = m1.getCalendar().getTimeInMillis();
+            long dateM2 = m2.getCalendar().getTimeInMillis();
+            if(dateM2 >= dateM1){
+                return -1;
+            }else{
+                return 1;
+            }
+        }
+    };
+
+    public static Comparator<Meeting> meetingLocationComparator = new Comparator<Meeting>() {
+        public int compare(Meeting m1, Meeting m2) {
+            int locationM1 = m1.getLocation();
+            int locationM2 = m2.getLocation();
+            if(locationM2 >= locationM1){
+                return -1;
+            }else{
+                return 1;
+            }
+        }
+    };
 }

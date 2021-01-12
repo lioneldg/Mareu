@@ -16,27 +16,15 @@ public class Tools {
         return !(text.length() > 0);
     }
 
-    public static boolean participantsIsNotEmpty(ArrayList<String> participants){
-        return !participants.isEmpty();
+    public static boolean participantsIsEmpty(ArrayList<String> participants){
+        return participants.isEmpty();
     }
 
-    public static boolean validateDate(String dayStr, String monthStr, String yearStr){
-        if(dayStr != null && monthStr != null && yearStr != null) {
-            int day = Integer.parseInt(dayStr);
-            int month = Integer.parseInt(monthStr);
-            int year = Integer.parseInt(yearStr);
-            return day > 0 && day < 32 && month > 0 && month < 13 && year > 2000 && year < 2030;
-        }else{
-            return false;
-        }
+    public static boolean validateDate(int day, int month, int year){
+            return day >= 1 && day <= 31 && month >= 1 && month <= 12 && year > 1999 && year < 2030;
     }
-    public static boolean validateTime(String hourStr, String minuteStr){
-        if(hourStr != null && minuteStr != null) {
-            int hour = Integer.parseInt(hourStr);
-            int minute = Integer.parseInt(minuteStr);
-            return hour > -1 && hour < 25 && minute > -1 && minute < 61;
-        }else{
-            return false;
-        }
+
+    public static boolean validateTime(int hour, int minute){
+            return hour >= 0 && hour <= 24 && minute >= 0 && minute <= 59;
     }
 }
