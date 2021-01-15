@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AddMeetingActivity" />
+        <activity android:name=".ui.AddMeetingActivity"  android:configChanges="orientation |screenSize"/>
         <activity android:name=".ui.SetFilterByLocationActivity" android:theme="@android:style/Theme.Dialog" />
     </application>
 

@@ -200,4 +200,10 @@ public class AddMeetingActivity extends AppCompatActivity {
         chip.setTextColor(getResources().getColor(R.color.black));
         chipGroup.addView(chip);
     }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        finish();
+    }
 }
