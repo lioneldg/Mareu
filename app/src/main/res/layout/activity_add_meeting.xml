@@ -102,6 +102,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/complete"
+                android:completionThreshold="1"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:hint="email@participant.fr"

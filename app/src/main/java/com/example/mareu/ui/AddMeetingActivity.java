@@ -116,7 +116,6 @@ public class AddMeetingActivity extends AppCompatActivity {
             timePickerDialog.show();
         });
 
-        autoCompleteTextView.setThreshold(1);                                                                                                   //paramétrage de l'autocompletion
         ArrayAdapter<String> autocompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, emails);
         autoCompleteTextView.setAdapter(autocompleteAdapter);
         autoCompleteTextView.setOnKeyListener((view, keyCode, keyEvent) -> {

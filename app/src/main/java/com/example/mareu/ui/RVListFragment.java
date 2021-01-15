@@ -48,8 +48,7 @@ public class RVListFragment extends Fragment {
         fragmentRvListBinding = FragmentRvListBinding.inflate(inflater, container, false);
         recyclerView = fragmentRvListBinding.list;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewListAdapter = new RecyclerViewListAdapter(service.getMeetings());
-        recyclerView.setAdapter(recyclerViewListAdapter);
+        rvSetAdapter();
         FloatingActionButton floatingActionButton = fragmentRvListBinding.floatingActionButton;
         floatingActionButton.setOnClickListener(view -> {
             Intent addMeetingIntent = new Intent(getActivity(), AddMeetingActivity.class);
@@ -63,12 +62,15 @@ public class RVListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == this.requestCode && resultCode == Activity.RESULT_OK){
             service.sortByDate();
-            recyclerViewListAdapter.notifyDataSetChanged();
+            if(service.getFilterType() != MeetingApiService.EnumFilterType.NONE){
+                rvSetAdapter();                                         //redonner l'adapter à la RV car il a changé à cause de filteredMeetings = new ArrayList<>(); dans MeetingApiService
+            } else {
+                recyclerViewListAdapter.notifyDataSetChanged();
+            }
         }
     }
 
-    public void reloadRV(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    public void rvSetAdapter(){
         recyclerViewListAdapter = new RecyclerViewListAdapter(service.getFilterType() == MeetingApiService.EnumFilterType.NONE ? service.getMeetings() : service.getFilteredMeetings());
         recyclerView.setAdapter(recyclerViewListAdapter);
     }
@@ -77,8 +79,6 @@ public class RVListFragment extends Fragment {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         service.clearMeetings();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewListAdapter = new RecyclerViewListAdapter(filterType == MeetingApiService.EnumFilterType.NONE ? service.getMeetings() : service.getFilteredMeetings());
-        recyclerView.setAdapter(recyclerViewListAdapter);
+        rvSetAdapter();
     }
 }

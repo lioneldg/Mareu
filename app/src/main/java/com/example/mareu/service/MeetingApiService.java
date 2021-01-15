@@ -29,11 +29,17 @@ public class MeetingApiService implements InterfaceMeetingApiService{
     @Override
     public void createMeeting(Meeting meeting) {
         meetings.add(meeting);
+        if(filterType != EnumFilterType.NONE){
+            redoFilter();
+        }
     }
 
     @Override
     public void deleteMeeting(Meeting meeting) {
         meetings.remove(meeting);
+        if(filteredMeetings.contains(meeting)){
+            filteredMeetings.remove(meeting);
+        }
     }
 
     @Override
@@ -111,6 +117,19 @@ public class MeetingApiService implements InterfaceMeetingApiService{
             if(isSameYear && isSameMonth && isSameDay && isSameLocation){
                 filteredMeetings.add(meeting);
             }
+        }
+    }
+
+    @Override
+    public void redoFilter() {
+        switch (filterType){
+            case BOTH:
+                filterBoth();
+                break;
+            case DATE:
+                filterByDate();
+            case LOCATION:
+                filterByLocation();
         }
     }
 

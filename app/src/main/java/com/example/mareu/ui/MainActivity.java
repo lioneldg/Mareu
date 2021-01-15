@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         dateFilter.getIcon().setTint(getResources().getColor(R.color.red));
                         service.initFilterByDate(year, monthOfYear, dayOfMonth);
-                        rvListFragment.reloadRV();
+                        rvListFragment.rvSetAdapter();
                     }, currentYear, currentMonth, currentDay);
                     datePickerDialog.show();
                 }else{
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     } else{
                         service.setFilterType(MeetingApiService.EnumFilterType.NONE);
                     }
-                    rvListFragment.reloadRV();
+                    rvListFragment.rvSetAdapter();
                 }
                 return true;
             case R.id.locationFilter:
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     } else{
                         service.setFilterType(MeetingApiService.EnumFilterType.NONE);
                     }
-                    rvListFragment.reloadRV();
+                    rvListFragment.rvSetAdapter();
                 }
                 return true;
         }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             }
             locationFilter.getIcon().setTint(getResources().getColor(R.color.red));
             service.initFilterByLocation(data.getIntExtra("selectedItem", 1));
-            rvListFragment.reloadRV();
+            rvListFragment.rvSetAdapter();
         }
     }
 }

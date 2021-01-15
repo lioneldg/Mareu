@@ -27,6 +27,8 @@ public interface InterfaceMeetingApiService {
 
     void filterBoth();
 
+    void redoFilter();
+
     MeetingApiService.EnumFilterType getFilterType();
 
     void setFilterType(MeetingApiService.EnumFilterType type);
