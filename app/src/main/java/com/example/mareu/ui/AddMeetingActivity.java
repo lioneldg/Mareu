@@ -14,12 +14,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.mareu.R;
 import com.example.mareu.databinding.ActivityAddMeetingBinding;
 import com.example.mareu.di.DI;
@@ -28,7 +25,6 @@ import com.example.mareu.service.InterfaceMeetingApiService;
 import com.example.mareu.tools.Tools;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;

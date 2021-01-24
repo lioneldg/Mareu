@@ -5,26 +5,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
 import com.example.mareu.R;
 import com.example.mareu.databinding.ActivityMainBinding;
 import com.example.mareu.di.DI;
 import com.example.mareu.service.InterfaceMeetingApiService;
 import com.example.mareu.service.MeetingApiService;
-
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private MenuItem dateFilter;

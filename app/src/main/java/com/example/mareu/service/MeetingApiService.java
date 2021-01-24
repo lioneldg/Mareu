@@ -46,6 +46,7 @@ public class MeetingApiService implements InterfaceMeetingApiService{
     public void clearMeetings() {
         meetings = new ArrayList<>();
         filteredMeetings = new ArrayList<>();
+        setFilterType(EnumFilterType.NONE);
     }
 
     @Override

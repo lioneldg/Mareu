@@ -5,22 +5,18 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
-
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.rule.ActivityTestRule;
-
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.service.InterfaceMeetingApiService;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
-
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -155,6 +151,14 @@ public class BothFilterTest {
         onView(allOf(withId(R.id.subject), withText("Meeting 2"))).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.subject), withText("Meeting 3"))).check(matches(isDisplayed()));
 
+        //click on filter by date
+        onView(withId(R.id.dateFilter)).perform(click());
+
+        //select the date to filter
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3 + 1, 5));
+
+        //click on OK
+        onView(allOf(withId(android.R.id.button1), withText("OK"))).perform(click());
 
         //click on filter by location
         onView(withId(R.id.locationFilter)).perform(click());
@@ -167,15 +171,6 @@ public class BothFilterTest {
 
         //click on OK
         onView(withId(R.id.ok)).perform(click());
-
-        //click on filter by date
-        onView(withId(R.id.dateFilter)).perform(click());
-
-        //select the date to filter
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3 + 1, 5));
-
-        //click on OK
-        onView(allOf(withId(android.R.id.button1), withText("OK"))).perform(click());
 
         //test if the meetings are filtered
         onView(allOf(withId(R.id.subject), withText("Meeting 3"))).check(matches(isDisplayed()));

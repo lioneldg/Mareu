@@ -3,30 +3,20 @@ package com.example.mareu.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.mareu.databinding.ActivityAddMeetingBinding;
 import com.example.mareu.databinding.FragmentRvListBinding;
-import com.example.mareu.databinding.ListCellBinding;
 import com.example.mareu.di.DI;
-import com.example.mareu.model.Meeting;
 import com.example.mareu.service.InterfaceMeetingApiService;
 import com.example.mareu.service.MeetingApiService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
 
 public class RVListFragment extends Fragment {
     private FragmentRvListBinding fragmentRvListBinding;

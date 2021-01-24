@@ -3,14 +3,11 @@ package com.example.mareu.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-
 import androidx.annotation.Nullable;
 import com.example.mareu.databinding.ActivitySetFilterByLocationBinding;
-
 import java.util.ArrayList;
 import java.util.List;
 

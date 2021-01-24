@@ -1,22 +1,16 @@
 package com.example.mareu.ui;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mareu.databinding.ListCellBinding;
 import com.example.mareu.di.DI;
 import com.example.mareu.model.Meeting;
 import com.example.mareu.service.InterfaceMeetingApiService;
 import com.example.mareu.tools.Tools;
-
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
