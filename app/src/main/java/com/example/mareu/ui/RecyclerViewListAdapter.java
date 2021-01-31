@@ -15,9 +15,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewListAdapter.RecyclerViewListViewHolder> {
-    private ListCellBinding listCellBinding;
-    private InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API services
-    private List<Meeting> meetings;
+    private final InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API services
+    private final List<Meeting> meetings;
 
     public RecyclerViewListAdapter(List<Meeting> meetings) {
         this.meetings = meetings;
@@ -27,7 +26,7 @@ public class RecyclerViewListAdapter extends RecyclerView.Adapter<RecyclerViewLi
     @Override
     public RecyclerViewListAdapter.RecyclerViewListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        listCellBinding = ListCellBinding.inflate(inflater, parent, false);
+        com.example.mareu.databinding.ListCellBinding listCellBinding = ListCellBinding.inflate(inflater, parent, false);
         return new RecyclerViewListViewHolder(listCellBinding);
     }
 

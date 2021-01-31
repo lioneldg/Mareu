@@ -4,9 +4,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.service.InterfaceMeetingApiService;
@@ -35,10 +35,10 @@ import static org.hamcrest.Matchers.is;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class LocationFilterTest {
-    private InterfaceMeetingApiService service = DI.getMeetingApiService();
+    private final InterfaceMeetingApiService service = DI.getMeetingApiService();
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityTestRule = new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
     public void locationFilterTest() {
@@ -67,7 +67,7 @@ public class LocationFilterTest {
         //click on spinner
         onView(withId(R.id.spinnerRooms)).perform(click());
         //select the 2nd position
-        onData(anything()).inAdapterView(childAtPosition(withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),0)).atPosition(1).perform(click());
+        onData(anything()).inAdapterView(childAtPosition(withClassName(is("android.widget.PopupWindow$PopupBackgroundView")))).atPosition(1).perform(click());
 
         //write emails
         ViewInteraction mailTextView = onView(withId(R.id.complete));
@@ -99,7 +99,7 @@ public class LocationFilterTest {
         //click on spinner
         onView(withId(R.id.spinnerRooms)).perform(click());
         //select the 4th position
-        onData(anything()).inAdapterView(childAtPosition(withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),0)).atPosition(3).perform(click());
+        onData(anything()).inAdapterView(childAtPosition(withClassName(is("android.widget.PopupWindow$PopupBackgroundView")))).atPosition(3).perform(click());
 
         //write emails
         mailTextView = onView(withId(R.id.complete));
@@ -122,7 +122,7 @@ public class LocationFilterTest {
         onView(withId(R.id.spinner)).perform(click());
 
         //select the 2nd position
-        onData(anything()).inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")), childAtPosition(withClassName(is("android.widget.LinearLayout")),0))).atPosition(1).perform(click());
+        onData(anything()).inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")), childAtPosition(withClassName(is("android.widget.LinearLayout"))))).atPosition(1).perform(click());
 
         //click on OK
         onView(withId(R.id.ok)).perform(click());
@@ -136,12 +136,12 @@ public class LocationFilterTest {
     }
 
     private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
+            final Matcher<View> parentMatcher) {
 
         return new TypeSafeMatcher<View>() {
             @Override
             public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
+                description.appendText("Child at position " + 0 + " in parent ");
                 parentMatcher.describeTo(description);
             }
 
@@ -149,7 +149,7 @@ public class LocationFilterTest {
             public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
+                        && view.equals(((ViewGroup) parent).getChildAt(0));
             }
         };
     }

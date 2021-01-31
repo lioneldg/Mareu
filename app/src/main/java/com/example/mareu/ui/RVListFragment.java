@@ -19,12 +19,10 @@ import com.example.mareu.service.MeetingApiService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RVListFragment extends Fragment {
-    private FragmentRvListBinding fragmentRvListBinding;
     private RecyclerView recyclerView;
     private RecyclerViewListAdapter recyclerViewListAdapter;
-    private InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API services
-    private int requestCode = 658;
-    private MeetingApiService.EnumFilterType filterType = MeetingApiService.EnumFilterType.NONE ;
+    private final InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API services
+    private final int requestCode = 658;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +33,7 @@ public class RVListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {        //un RV qui affiche la liste des réunions
         super.onCreateView(inflater, container, savedInstanceState);
-        fragmentRvListBinding = FragmentRvListBinding.inflate(inflater, container, false);
+        com.example.mareu.databinding.FragmentRvListBinding fragmentRvListBinding = FragmentRvListBinding.inflate(inflater, container, false);
         recyclerView = fragmentRvListBinding.list;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         rvSetAdapter();

@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mareu</string>
     <string name="th_me_de_la_r_union">Thème de la réunion</string>
     <string name="organisateur">Organisateur</string>
     <string name="date">Date</string>

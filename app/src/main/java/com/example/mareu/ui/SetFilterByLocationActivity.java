@@ -22,7 +22,7 @@ public class SetFilterByLocationActivity extends Activity {
         setContentView(activitySetFilterByLocationBinding.getRoot());
 
         Spinner spinner = activitySetFilterByLocationBinding.spinner;
-        List<String> items = new ArrayList<String>();
+        List<String> items = new ArrayList<>();
         items.add("1");
         items.add("2");
         items.add("3");
@@ -50,8 +50,6 @@ public class SetFilterByLocationActivity extends Activity {
             finish();
         });
 
-        cancel.setOnClickListener(view -> {
-            finish();
-        });
+        cancel.setOnClickListener(view -> finish());
     }
 }

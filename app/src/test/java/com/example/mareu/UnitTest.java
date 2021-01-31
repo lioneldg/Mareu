@@ -11,9 +11,11 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class UnitTest {
-    private InterfaceMeetingApiService service;
+    private final InterfaceMeetingApiService service;
     private List<Meeting> meetingList, filteredMeetingList;
-    private Meeting meeting1, meeting2, meeting3;
+    private final Meeting meeting1;
+    private final Meeting meeting2;
+    private final Meeting meeting3;
 
     public UnitTest(){
         service = DI.getMeetingApiService();

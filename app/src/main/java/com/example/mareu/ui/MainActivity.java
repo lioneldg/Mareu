@@ -23,10 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem locationFilter;
     private boolean isDateFiltered = false;
     private boolean isLocationFiltered = false;
-    private InterfaceMeetingApiService service = DI.getMeetingApiService();
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private int requestCode = 145;
+    private final InterfaceMeetingApiService service = DI.getMeetingApiService();
+    private final int requestCode = 145;
     RVListFragment rvListFragment;
 
     @Override
@@ -34,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();                               //ajout de FragmentRVList au fragmentTransaction relié à l'activité principale
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();                               //ajout de FragmentRVList au fragmentTransaction relié à l'activité principale
         rvListFragment = new RVListFragment();
         fragmentTransaction.add(activityMainBinding.getRoot().getId(), rvListFragment, "tagFragmentRVList");
         fragmentTransaction.commit();

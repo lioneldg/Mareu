@@ -9,7 +9,8 @@ import java.util.List;
 public class MeetingApiService implements InterfaceMeetingApiService{
     private List<Meeting> meetings = new ArrayList<>();
     private List<Meeting> filteredMeetings = new ArrayList<>();
-    public enum EnumFilterType{NONE, LOCATION, DATE, BOTH};
+    public enum EnumFilterType{NONE, LOCATION, DATE, BOTH}
+
     private EnumFilterType filterType = EnumFilterType.NONE;
     private int yearFiltered;
     private int monthOfYearFiltered;
@@ -37,9 +38,7 @@ public class MeetingApiService implements InterfaceMeetingApiService{
     @Override
     public void deleteMeeting(Meeting meeting) {
         meetings.remove(meeting);
-        if(filteredMeetings.contains(meeting)){
-            filteredMeetings.remove(meeting);
-        }
+        filteredMeetings.remove(meeting);
     }
 
     @Override

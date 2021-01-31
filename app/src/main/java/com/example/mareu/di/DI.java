@@ -8,13 +8,10 @@ import com.example.mareu.service.MeetingApiService;
  */
 public class DI {
 
-    private static InterfaceMeetingApiService service = new MeetingApiService();    //variable de classe instanciée à la première utilisation de DI
+    private static final InterfaceMeetingApiService service = new MeetingApiService();    //variable de classe instanciée à la première utilisation de DI
 
     public static InterfaceMeetingApiService getMeetingApiService(){
         return service;
     }
 
-    public static InterfaceMeetingApiService getNewInstanceMeetingApiService(){
-        return new MeetingApiService();
-    }
 }
