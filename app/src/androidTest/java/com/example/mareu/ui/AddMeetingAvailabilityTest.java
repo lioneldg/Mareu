@@ -1,5 +1,8 @@
 package com.example.mareu.ui;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -12,10 +15,15 @@ import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.service.InterfaceMeetingApiService;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -28,6 +36,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -39,38 +49,43 @@ public class AddMeetingAvailabilityTest {
 
     @Test
     public void availabilityTest() {
+        ViewInteraction list = onView(withId(R.id.list));
         //test if there's no meeting
         onView(withId(R.id.listCell)).check(doesNotExist());
 
         //create a meeting on 2 january 2021 at 15h00 room 1
         createMeeting("Meeting 1",1, 2, 1, 2021, 15, 0);
-        //test if the meeting is displayed
-        onView(withId(R.id.listCell)).check(matches(isDisplayed()));
+        //test if the meeting is granted
+        list.check(matches(isDisplayed()));
 
         //room 1 unavailable 44 minutes before (at 14h16)
         createMeeting("Meeting 2",1, 2, 1, 2021, 14, 44);
-        //test if the meeting is not displayed
-        onView(withId(R.id.listCell)).check(doesNotExist());
-
-        //room 1 available 45 minutes before (at 14h15)
-        createMeeting("Meeting 3",1, 2, 1, 2021, 14, 15);
-        //test if the meeting is displayed
-        onView(withId(R.id.listCell)).check(matches(isDisplayed()));
+        //test if the meeting is not granted
+        list.check(doesNotExist());//so change time!!!
 
         //room 1 unavailable 44 minutes after (at 15h44)
-        createMeeting("Meeting 4",1, 2, 1, 2021, 15, 44);
-        //test if the meeting is not displayed
-        onView(withId(R.id.listCell)).check(doesNotExist());
+        editMeetingTime(15,44);
+        //validate
+        onView(withId(R.id.imageButtonValidate)).perform(click());
+        //test if the meeting is not granted
+        list.check(doesNotExist());//so change time!!!
+
+        //room 1 available 45 minutes before (at 14h15)
+        editMeetingTime(14,15);
+        //validate
+        onView(withId(R.id.imageButtonValidate)).perform(click());
+        //test if the meeting is granted
+        list.check(matches(isDisplayed()));
 
         //room 1 available 45 minutes after (at 15h45)
         createMeeting("Meeting 5",1, 2, 1, 2021, 15, 45);
-        //test if the meeting is displayed
-        onView(withId(R.id.listCell)).check(matches(isDisplayed()));
+        //test if the meeting is granted
+        list.check(matches(isDisplayed()));
 
         //we can use room 2 if room 2 is available and room 1 isn't
         createMeeting("Meeting 6",2, 2, 1, 2021, 15, 0);
-        //test if the meeting is displayed
-        onView(withId(R.id.listCell)).check(matches(isDisplayed()));
+        //test if the meeting is granted
+        list.check(matches(isDisplayed()));
 
         //reset meetings
         service.clearMeetings();
@@ -91,11 +106,40 @@ public class AddMeetingAvailabilityTest {
         onView(withId(R.id.buttonTimePicker)).perform(scrollTo(), click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(hour,minute));
         onView(allOf(withId(android.R.id.button1), withText("OK"))).perform(click());
+        //click on spinner to choose room
+        onView(withId(R.id.spinnerRooms)).perform(click());
+        onData(anything()).inAdapterView(childAtPosition(withClassName(is("android.widget.PopupWindow$PopupBackgroundView")))).atPosition(room-1).perform(click());
         //write emails
         ViewInteraction mailTextView = onView(withId(R.id.complete));
         mailTextView.perform(typeText("lioneldegans@gmail.com\n"));
         mailTextView.perform(typeText("lionel.degans@shadline.com\n"), closeSoftKeyboard());
         //validate
         onView(withId(R.id.imageButtonValidate)).perform(click());
+    }
+
+    private void editMeetingTime(int hour, int minute){
+        //click on button timePicker to chose a hour
+        onView(withId(R.id.buttonTimePicker)).perform(scrollTo(), click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(hour,minute));
+        onView(allOf(withId(android.R.id.button1), withText("OK"))).perform(click());
+    }
+
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + 0 + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(0));
+            }
+        };
     }
 }
