@@ -27,4 +27,9 @@ public class Tools {
     public static boolean validateTime(int hour, int minute){
             return hour >= 0 && hour <= 24 && minute >= 0 && minute <= 59;
     }
+
+    public static long millisToMinutes(long millis){
+        double minDouble = millis/(1000*60);
+        return Math.round(minDouble);
+    }
 }

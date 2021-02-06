@@ -1,6 +1,8 @@
 package com.example.mareu.service;
 
 import com.example.mareu.model.Meeting;
+import com.example.mareu.tools.Tools;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -135,15 +137,16 @@ public class MeetingApiService implements InterfaceMeetingApiService{
 
     @Override
     public Boolean testMeetingAvailability(Calendar calendar, int rdvRoom) {
-        long rdvTime = calendar.getTimeInMillis();
+        long rdvTimeMinutes = Tools.millisToMinutes(calendar.getTimeInMillis());
         Boolean available = true;
         for (Meeting meeting: meetings) {
-            //une réunion dure en moyenne 45 min la salle est bloquée 45 min avant et jusqu'à 45 minutes après l'heure de début. On peut valider une réunion 46 minutes avant ou après
+            //une réunion dure en moyenne 45 min la salle est bloquée 44 min avant et jusqu'à 44 minutes après l'heure de début. On peut valider une réunion 46 minutes avant ou après
             int roomMeeting = meeting.getLocation();
-            long startTime = meeting.getCalendar().getTimeInMillis();
-            long beforeTime = startTime - 1000 * 60 * 45;
-            long endTime = startTime + 1000 * 60 * 45;
-            if(rdvTime >= beforeTime && rdvTime <= endTime && roomMeeting == rdvRoom){
+            long startTimeMinutes = Tools.millisToMinutes(meeting.getCalendar().getTimeInMillis());
+            long beforeTimeMinutes = startTimeMinutes - 44;
+            long endTimeMinutes = startTimeMinutes + 44;
+
+            if(rdvTimeMinutes >= beforeTimeMinutes && rdvTimeMinutes <= endTimeMinutes && roomMeeting == rdvRoom){
                 available = false;
             }
         }

@@ -16,11 +16,12 @@ public class UnitTests {
     private final Meeting meeting1;
     private final Meeting meeting2;
     private final Meeting meeting3;
+    private Calendar calendar;
 
     public UnitTests(){
         service = DI.getMeetingApiService();
         ArrayList<String> participants = new ArrayList<>(Arrays.asList("lioneldegan@gmail.com", "lionel.degans@shadline.com"));
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         calendar.set(2021, 1, 2, 15, 0);
         meeting1 = new Meeting(calendar, 1, "Sujet du meeting", participants);
         calendar = Calendar.getInstance();
@@ -264,5 +265,32 @@ public class UnitTests {
         assertFalse(filteredMeetingList.contains(meeting3));
         assertEquals(meetingList.size(),2);
         assertEquals(filteredMeetingList.size(),0);
+    }
+
+    @Test
+    public void test_meeting_availability() {
+        service.clearMeetings();
+        //céation d'une réunion le 2 janvier 2021 à 15h00 salle 1
+        service.createMeeting(meeting1);
+        //test de non disponibilité de la salle 1 44 minutes avant (à 14h16)
+        calendar = Calendar.getInstance();
+        calendar.set(2021, 1, 2, 14, 16);
+        assertFalse(service.testMeetingAvailability(calendar, 1));
+        //test de disponibilité de la salle 1 45 minutes avant (à 14h15)
+        calendar = Calendar.getInstance();
+        calendar.set(2021, 1, 2, 14, 15);
+        assertTrue(service.testMeetingAvailability(calendar, 1));
+        //test de non disponibilité de la salle 1 44 minutes après (à 15h44)
+        calendar = Calendar.getInstance();
+        calendar.set(2021, 1, 2, 15, 44);
+        assertFalse(service.testMeetingAvailability(calendar, 1));
+        //test de disponibilité de la salle 1 45 minutes après (à 15h45)
+        calendar = Calendar.getInstance();
+        calendar.set(2021, 1, 2, 15, 45);
+        assertTrue(service.testMeetingAvailability(calendar, 1));
+        //test de disponibilité de la salle 2 pendant le temps de réservation de la salle 1 (à 15h00)
+        calendar = Calendar.getInstance();
+        calendar.set(2021, 1, 2, 15, 0);
+        assertTrue(service.testMeetingAvailability(calendar, 2));
     }
 }
