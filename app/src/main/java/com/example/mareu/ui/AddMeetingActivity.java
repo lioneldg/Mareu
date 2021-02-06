@@ -111,7 +111,7 @@ public class AddMeetingActivity extends AppCompatActivity {
             }, currentHour, currentMinute, true);
             timePickerDialog.show();
         });
-
+        //autocomplete textView avec des chips ajoutés dans participants si validation OK
         ArrayAdapter<String> autocompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, emails);
         autoCompleteTextView.setAdapter(autocompleteAdapter);
         autoCompleteTextView.setOnKeyListener((view, keyCode, keyEvent) -> {
@@ -126,7 +126,7 @@ public class AddMeetingActivity extends AppCompatActivity {
                 } else{
                     autoCompleteTextView.setText("");
                     autoCompleteTextView.append(email);                                                          //réécrit l'email et positionne le curseur à la fin
-                    Toast.makeText(this, "Veuillez saisir une adresse mail valide.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.Veuillez_saisir_une_adresse_mail_valide, Toast.LENGTH_LONG).show();
                 }
             }
             return false;
@@ -155,27 +155,27 @@ public class AddMeetingActivity extends AppCompatActivity {
         String infoErrors = "";
 
         if(Tools.textIsEmpty(subject)){
-            infoErrors += "Veuillez saisir un sujet.";
+            infoErrors += getString(R.string.Veuillez_saisir_un_sujet);
             valid = false;
         }
         if(Tools.textIsEmpty(master)){
             if(infoErrors.length() > 0 ) infoErrors += "\n";
-            infoErrors += "Veuillez saisir votre nom dans le champ organisateur.";
+            infoErrors += getString(R.string.Veuillez_saisir_votre_nom_dans_le_champ_organisateur);
             valid = false;
         }
         if(!Tools.validateDate(pickedDayOfMonth, pickedMonthOfYear + 1, pickedYear)){
             if(infoErrors.length() > 0 ) infoErrors += "\n";
-            infoErrors += "Veuillez choisir une date valide.";
+            infoErrors += getString(R.string.Veuillez_choisir_une_date_valide);
             valid = false;
         }
         if(!Tools.validateTime(pickedHour, pickedMinute)){
             if(infoErrors.length() > 0 ) infoErrors += "\n";
-            infoErrors += "Veuillez choisir une heure valide.";
+            infoErrors += getString(R.string.Veuillez_choisir_une_heure_valide);
             valid = false;
         }
         if(Tools.participantsIsEmpty(participants)){
             if(infoErrors.length() > 0 ) infoErrors += "\n";
-            infoErrors += "Veuillez renseigner le(s) participant(s).";
+            infoErrors += getString(R.string.Veuillez_renseigner_le_s_participant_s);
             valid = false;
         }
         if(infoErrors.length() > 0){

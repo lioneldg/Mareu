@@ -21,13 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class RVListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewListAdapter recyclerViewListAdapter;
-    private final InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API services
+    private final InterfaceMeetingApiService service = DI.getMeetingApiService();             //récupère l'API service
     private final int requestCode = 658;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -57,7 +52,7 @@ public class RVListFragment extends Fragment {
             }
         }
     }
-
+    //la liste des meeting dépend du type de filtre
     public void rvSetAdapter(){
         recyclerViewListAdapter = new RecyclerViewListAdapter(service.getFilterType() == MeetingApiService.EnumFilterType.NONE ? service.getMeetings() : service.getFilteredMeetings());
         recyclerView.setAdapter(recyclerViewListAdapter);

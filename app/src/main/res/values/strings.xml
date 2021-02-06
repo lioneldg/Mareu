@@ -13,4 +13,13 @@
     <string name="ok">OK</string>
     <string name="add_meeting">Add meeting</string>
     <string name="delete_meeting">Delete meeting</string>
+    <string name="Veuillez_saisir_une_adresse_mail_valide">Veuillez saisir une adresse mail valide.</string>
+    <string name="Veuillez_saisir_un_sujet">Veuillez saisir un sujet.</string>
+    <string name="Veuillez_saisir_votre_nom_dans_le_champ_organisateur">Veuillez saisir votre nom dans le champ organisateur.</string>
+    <string name="Veuillez_choisir_une_date_valide">Veuillez choisir une date valide.</string>
+    <string name="Veuillez_choisir_une_heure_valide">Veuillez choisir une heure valide.</string>
+    <string name="Veuillez_renseigner_le_s_participant_s">Veuillez renseigner le(s) participant(s).</string>
+    <string name="Salle">Salle </string>
+    <string name="le">le </string>
+    <string name="à">à</string>
 </resources>

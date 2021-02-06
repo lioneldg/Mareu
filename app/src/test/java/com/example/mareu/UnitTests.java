@@ -10,14 +10,14 @@ import java.util.Calendar;
 import java.util.List;
 import static org.junit.Assert.*;
 
-public class UnitTest {
+public class UnitTests {
     private final InterfaceMeetingApiService service;
     private List<Meeting> meetingList, filteredMeetingList;
     private final Meeting meeting1;
     private final Meeting meeting2;
     private final Meeting meeting3;
 
-    public UnitTest(){
+    public UnitTests(){
         service = DI.getMeetingApiService();
         ArrayList<String> participants = new ArrayList<>(Arrays.asList("lioneldegan@gmail.com", "lionel.degans@shadline.com"));
         Calendar calendar = Calendar.getInstance();
