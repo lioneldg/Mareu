@@ -2,6 +2,7 @@ package com.example.mareu.service;
 
 import com.example.mareu.model.Meeting;
 
+import java.util.Calendar;
 import java.util.List;
 
 public interface InterfaceMeetingApiService {
@@ -28,6 +29,8 @@ public interface InterfaceMeetingApiService {
     void filterBoth();
 
     void redoFilter();
+
+    Boolean testMeetingAvailability(Calendar calendar, int roomInt);
 
     MeetingApiService.EnumFilterType getFilterType();
 

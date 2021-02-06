@@ -45,6 +45,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextView;
     private ChipGroup chipGroup;
     private ArrayList<String> participants;
+    private InterfaceMeetingApiService service;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         ActivityAddMeetingBinding activityAddMeetingBinding = ActivityAddMeetingBinding.inflate(getLayoutInflater());
         setContentView(activityAddMeetingBinding.getRoot());
 
-        InterfaceMeetingApiService service = DI.getMeetingApiService();
+        service = DI.getMeetingApiService();
         EditText editTextMeetingSubject = activityAddMeetingBinding.editTextMeetingSubject;
         EditText editTextMeetingMaster = activityAddMeetingBinding.editTextMeetingMaster;
         TextView buttonDatePicker = activityAddMeetingBinding.buttonDatePicker;
@@ -138,11 +139,13 @@ public class AddMeetingActivity extends AppCompatActivity {
             String subject = editTextMeetingSubject.getText().toString();
             String master = editTextMeetingMaster.getText().toString();
             String room = spinnerRooms.getSelectedItem().toString();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(pickedYear, pickedMonthOfYear, pickedDayOfMonth, pickedHour, pickedMinute);
+            int roomInt = Integer.parseInt(room);
 
-            if(testsBeforeValid(subject, master)){
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(pickedYear, pickedMonthOfYear, pickedDayOfMonth, pickedHour, pickedMinute);
-                service.createMeeting(new Meeting(calendar, Integer.parseInt(room), subject, participants));
+            if(testsBeforeValid(subject, master, calendar, roomInt)){
+
+                service.createMeeting(new Meeting(calendar, roomInt, subject, participants));
                 setResult(Activity.RESULT_OK);
                 finish();
             }
@@ -150,9 +153,14 @@ public class AddMeetingActivity extends AppCompatActivity {
 
     }
 
-    private boolean testsBeforeValid(String subject, String master){
+    private boolean testsBeforeValid(String subject, String master, Calendar calendar, int roomInt){
         boolean valid = true;
         String infoErrors = "";
+
+        if(!service.testMeetingAvailability(calendar, roomInt)){
+            infoErrors += getString(R.string.La_salle_sélectionnée_n_est_pas_diponible_à_cette_heure_ci) + "\n" + getString(R.string.Une_salle_réservé_est_bloquée_45_min_avant_et_après_le_début_de_la_réunion);
+            valid = false;
+        }
 
         if(Tools.textIsEmpty(subject)){
             infoErrors += getString(R.string.Veuillez_saisir_un_sujet);

@@ -133,6 +133,23 @@ public class MeetingApiService implements InterfaceMeetingApiService{
         }
     }
 
+    @Override
+    public Boolean testMeetingAvailability(Calendar calendar, int rdvRoom) {
+        long rdvTime = calendar.getTimeInMillis();
+        Boolean available = true;
+        for (Meeting meeting: meetings) {
+            //une réunion dure en moyenne 45 min la salle est bloquée 45 min avant et jusqu'à 45 minutes après l'heure de début. On peut valider une réunion 46 minutes avant ou après
+            int roomMeeting = meeting.getLocation();
+            long startTime = meeting.getCalendar().getTimeInMillis();
+            long beforeTime = startTime - 1000 * 60 * 45;
+            long endTime = startTime + 1000 * 60 * 45;
+            if(rdvTime >= beforeTime && rdvTime <= endTime && roomMeeting == rdvRoom){
+                available = false;
+            }
+        }
+        return available;
+    }
+
 
     @Override
     public EnumFilterType getFilterType() {

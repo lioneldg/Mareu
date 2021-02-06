@@ -22,4 +22,6 @@
     <string name="Salle">Salle </string>
     <string name="le">le </string>
     <string name="à">à</string>
+    <string name="La_salle_sélectionnée_n_est_pas_diponible_à_cette_heure_ci">La salle sélectionnée n\'est pas diponible à cette heure-ci.</string>
+    <string name="Une_salle_réservé_est_bloquée_45_min_avant_et_après_le_début_de_la_réunion">Une salle réservé est bloquée 45 min avant et après le début de la réunion.</string>
 </resources>
